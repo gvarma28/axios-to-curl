@@ -1,29 +1,28 @@
 import { useState } from "react";
 import "./App.css";
 import { Textarea } from "@/components/ui/textarea";
-import { AxiosRequestConfig } from "axios";
+// import { AxiosRequestConfig } from "axios";
 import { axiosToCurl } from "./utils/axios-curl";
 import { Button } from "@/components/ui/button";
 
 function App() {
   const [configInput, setConfigInput] = useState("");
   const [outputCurl, setOutputCurl] = useState("");
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const testconfig: AxiosRequestConfig = {
-    method: "get",
-    maxContentLength: Infinity,
-    url: "https://www.mymoto.com.au/cars?sort=newest",
-    headers: {
-      "accept-encoding": "gzip, deflate",
-    },
-    // data: {"test": "abc"}
-  };
+
+  // const testconfig: AxiosRequestConfig = { // eslint-disable-line @typescript-eslint/no-unused-vars
+  //   method: "get",
+  //   maxContentLength: Infinity,
+  //   url: "https://www.mymoto.com.au/cars?sort=newest",
+  //   headers: {
+  //     "accept-encoding": "gzip, deflate",
+  //   },
+  //   // data: {"test": "abc"}
+  // };
 
   const handleClick = () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let obj: any = {};
     try {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
-      let obj: any = {};
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       obj = null;
 
       setOutputCurl("");
@@ -42,7 +41,7 @@ function App() {
       console.log(outputCurl);
       setOutputCurl(curl);
     } catch (error) {
-      console.log(error);
+      console.log(error, obj);
       setOutputCurl("Error: Invalid axios config");
     }
   };
