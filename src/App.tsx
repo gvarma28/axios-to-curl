@@ -9,7 +9,7 @@ function App() {
   const [configInput, setConfigInput] = useState("");
   const [outputCurl, setOutputCurl] = useState("");
 
-  // const testconfig: AxiosRequestConfig = { // eslint-disable-line @typescript-eslint/no-unused-vars
+  // const testconfig: AxiosRequestConfig = {
   //   method: "get",
   //   maxContentLength: Infinity,
   //   url: "https://www.mymoto.com.au/cars?sort=newest",
@@ -23,7 +23,7 @@ function App() {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let obj: any = {};
     try {
-      obj = null;
+      obj = undefined;
 
       setOutputCurl("");
 
@@ -38,10 +38,9 @@ function App() {
 
       const curl = axiosToCurl(config);
 
-      console.log(outputCurl);
       setOutputCurl(curl);
     } catch (error) {
-      console.log(error, obj);
+      console.log("Invalid axios config", obj);
       setOutputCurl("Error: Invalid axios config");
     }
   };
