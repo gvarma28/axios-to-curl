@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./App.css";
 import { Textarea } from "@/components/ui/textarea";
 import GithubIcon from "./assets/github.svg";
-import { axiosToCurl } from "./utils/axios-curl";
+import { AxiosToCurl } from "./utils/axios-curl";
 import { Button } from "@/components/ui/button";
 
 function App() {
@@ -15,11 +15,11 @@ Example:
 {
   method: "POST",
   maxContentLength: Infinity,
-  url: "https://www.abcd.com",
+  url: "https://www.google.com",
   headers: {
     "accept-encoding": "gzip, deflate",
   },
-  data: {"test": "abc"}
+  data: {"test": "request body"}
 }
   `;
 
@@ -40,7 +40,7 @@ Example:
 
       const config = JSON.parse(stringifyInput);
 
-      const curl = axiosToCurl(config);
+      const curl = new AxiosToCurl(config).generateCommand()
 
       setOutputCurl(curl);
     } catch (error) {
