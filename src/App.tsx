@@ -49,9 +49,11 @@ Example:
     }
   };
   const handleClick = () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars, no-unused-vars, prefer-const
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let obj: any = {};
     try {
+      obj = undefined;
+
       setOutputCurl("");
 
       if (!inputValidationCheck()) {
@@ -69,6 +71,9 @@ Example:
 
       setOutputCurl(curl);
     } catch (err) {
+      console.log("invalid axios config", {
+        error: obj || err,
+      });
       setOutputCurl(
         "error: invalid axios config | if you think the input is valid, please report a bug 🚀"
       );
