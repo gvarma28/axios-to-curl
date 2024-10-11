@@ -23,15 +23,40 @@ Example:
 }
   `;
 
+  const hasValidBraces = (input: string): boolean => {
+    const stack: string[] = [];
+    for (const char of input) {
+      if (char === "{") {
+        stack.push(char);
+      } else if (char === "}") {
+        if (stack.length === 0 || stack.pop() !== "{") {
+          return false;
+        }
+      }
+    }
+    return stack.length === 0;
+  };
+
+  const inputValidationCheck = (): boolean => {
+    try {
+      const cleanInput = configInput.replace(/\n/g, "").trim();
+      if (!cleanInput.match(/^\{[\s\S]*\}$/) || !hasValidBraces(cleanInput)) {
+        return false;
+      }
+      return true;
+    } catch (err) {
+      return false;
+    }
+  };
   const handleClick = () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars, no-unused-vars, prefer-const
     let obj: any = {};
     try {
-      obj = undefined;
-
       setOutputCurl("");
 
-      // :TODO write some security measures before calling eval
+      if (!inputValidationCheck()) {
+        throw new Error("invalid input");
+      }
 
       // converting input into a javascript object
       const jsObject = eval("obj = " + configInput);
@@ -40,12 +65,13 @@ Example:
 
       const config = JSON.parse(stringifyInput);
 
-      const curl = new AxiosToCurl(config).generateCommand()
+      const curl = new AxiosToCurl(config).generateCommand();
 
       setOutputCurl(curl);
-    } catch (error) {
-      console.log("Invalid axios config", obj);
-      setOutputCurl("Error: Invalid axios config");
+    } catch (err) {
+      setOutputCurl(
+        "error: invalid axios config | if you think the input is valid, please report a bug 🚀"
+      );
     }
   };
 
@@ -57,7 +83,7 @@ Example:
         setCopyState(false);
       }, 1500);
     } catch (error) {
-      console.log("Error while copying to clipboard", error);
+      return;
     }
   };
 
@@ -93,7 +119,7 @@ Example:
               variant="outline"
               onClick={handleCopy}
             >
-              {!copyState ? "Copy" : "Copied"}
+              {!copyState ? "Copy" : "Copied!"}
             </Button>
           </div>
           <Button variant="outline" onClick={handleClick} className="m-0">
