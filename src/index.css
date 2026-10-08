@@ -28,8 +28,8 @@
       --destructive: 0 84.2% 60.2%;
       --destructive-foreground: 210 40% 98%;
 
-      --border: 214.3 31.8% 91.4%;
-      --input: 214.3 31.8% 91.4%;
+      --border: 214.3 25% 84%;
+      --input: 214.3 25% 84%;
       --ring: 222.2 84% 4.9%;
 
       --radius: 0.5rem;
@@ -71,6 +71,12 @@
       @apply border-border;
     }
     body {
-      @apply bg-background text-foreground;
+      @apply bg-background text-foreground antialiased;
+      background-image: radial-gradient(
+        ellipse 80% 50% at 50% -20%,
+        hsl(var(--primary) / 0.06),
+        transparent
+      );
+      background-repeat: no-repeat;
     }
   }

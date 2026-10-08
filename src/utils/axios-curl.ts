@@ -6,11 +6,11 @@ export class AxiosToCurl {
     this.config = config;
   }
 
-  getHeaders() {
-    let headers = this.config.headers,
-      curlHeaders = "";
+  getHeaders(): string[] {
+    let headers = this.config.headers;
+    const curlHeaders: string[] = [];
 
-    if (!headers || !this.config.headers) return "";
+    if (!headers || !this.config.headers) return curlHeaders;
 
     // get the headers concerning the appropriate method (defined in the global axios instance)
     // eslint-disable-next-line no-prototype-builtins
@@ -34,11 +34,11 @@ export class AxiosToCurl {
     for (const property in headers) {
       if ({}.hasOwnProperty.call(headers, property)) {
         const header = `${property}:${headers[property]}`;
-        curlHeaders = `${curlHeaders} -H '${header}'`;
+        curlHeaders.push(`-H '${header}'`);
       }
     }
 
-    return curlHeaders.trim();
+    return curlHeaders;
   }
 
   getBody() {
@@ -101,9 +101,13 @@ export class AxiosToCurl {
     return url.trim();
   }
 
-  generateCommand() {
-    return `curl --location "${this.getBuiltURL()}" ${this.getHeaders()} ${this.getBody()}`
-      .trim()
-      .replace(/\s{2,}/g, " ");
+  generateCommand({ multiline = false }: { multiline?: boolean } = {}) {
+    const parts = [
+      `curl --location "${this.getBuiltURL()}"`,
+      ...this.getHeaders(),
+      this.getBody(),
+    ].filter(Boolean);
+
+    return parts.join(multiline ? " \\\n  " : " ");
   }
 }
